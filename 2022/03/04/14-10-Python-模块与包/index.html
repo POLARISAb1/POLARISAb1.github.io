@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1 项目目录结构python的程序结构：  组成 package包 modele模块 function方法  2 模块定义模块 包含Python定义和语句的文件 .py文件 作为脚本运行  模块分类 系统内置模块 第三方的开源模块 自定义模块  如何使用模块 系统内置模块 Python安装好之后自带的一些非常有用的模块（sys, os, time, json 模块等）       12import">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杨艺琳的博客">
+<meta property="og:url" content="http://example.com/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/index.html">
+<meta property="og:site_name" content="杨艺琳的博客">
+<meta property="og:description" content="1 项目目录结构python的程序结构：  组成 package包 modele模块 function方法  2 模块定义模块 包含Python定义和语句的文件 .py文件 作为脚本运行  模块分类 系统内置模块 第三方的开源模块 自定义模块  如何使用模块 系统内置模块 Python安装好之后自带的一些非常有用的模块（sys, os, time, json 模块等）       12import">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304134433802.png">
+<meta property="og:image" content="http://example.com/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304135423493.png">
+<meta property="og:image" content="http://example.com/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304140151603.png">
+<meta property="og:image" content="http://example.com/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304141004887.png">
+<meta property="article:published_time" content="2022-03-04T03:10:10.000Z">
+<meta property="article:modified_time" content="2022-03-22T07:29:20.000Z">
+<meta property="article:author" content="杨艺琳">
+<meta property="article:tag" content="python编程语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304134433802.png">
+
+<link rel="canonical" href="http://example.com/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 杨艺琳的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">杨艺琳的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">放弃不难<br>但坚持一定很酷</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="杨艺琳">
+      <meta itemprop="description" content="我就是这条街最靓的仔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨艺琳的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-04 11:10:10" itemprop="dateCreated datePublished" datetime="2022-03-04T11:10:10+08:00">2022-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-22 15:29:20" itemprop="dateModified" datetime="2022-03-22T15:29:20+08:00">2022-03-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">测试学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-项目目录结构"><a href="#1-项目目录结构" class="headerlink" title="1 项目目录结构"></a>1 项目目录结构</h1><h2 id="python的程序结构："><a href="#python的程序结构：" class="headerlink" title="python的程序结构："></a>python的程序结构：</h2><img src="/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304134433802.png" alt="image-20220304134433802" style="zoom: 50%;">
+
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><ul>
+<li><code>package</code>包</li>
+<li><code>modele</code>模块</li>
+<li><code>function</code>方法</li>
+</ul>
+<h1 id="2-模块定义"><a href="#2-模块定义" class="headerlink" title="2 模块定义"></a>2 模块定义</h1><h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><ul>
+<li>包含<code>Python</code>定义和语句的文件</li>
+<li><code>.py</code>文件</li>
+<li>作为脚本运行</li>
+</ul>
+<h2 id="模块分类"><a href="#模块分类" class="headerlink" title="模块分类"></a>模块分类</h2><ul>
+<li>系统内置模块</li>
+<li>第三方的开源模块</li>
+<li>自定义模块</li>
+</ul>
+<h2 id="如何使用模块"><a href="#如何使用模块" class="headerlink" title="如何使用模块"></a>如何使用模块</h2><ul>
+<li><h3 id="系统内置模块"><a href="#系统内置模块" class="headerlink" title="系统内置模块"></a>系统内置模块</h3><ul>
+<li><p>Python安装好之后自带的一些非常有用的模块（sys, os, time, json 模块等）</p>
+  <img src="/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304135423493.png" alt="image-20220304135423493" style="zoom:50%;">
+
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="built_in">print</span>(sys.path)</span><br></pre></td></tr></table></figure>
+
+<p>  结果：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;D:\\PycharmProject&#x27;</span>, <span class="string">&#x27;D:\\PycharmProject&#x27;</span>, <span class="string">&#x27;C:\\Program Files\\Python310\\python310.zip&#x27;</span>, <span class="string">&#x27;C:\\Program Files\\Python310\\DLLs&#x27;</span>, <span class="string">&#x27;C:\\Program Files\\Python310\\lib&#x27;</span>, <span class="string">&#x27;C:\\Program Files\\Python310&#x27;</span>, <span class="string">&#x27;C:\\Users\\yilin.yang\\AppData\\Roaming\\Python\\Python310\\site-packages&#x27;</span>, <span class="string">&#x27;C:\\Program Files\\Python310\\lib\\site-packages&#x27;</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="第三方开源模块"><a href="#第三方开源模块" class="headerlink" title="第三方开源模块"></a>第三方开源模块</h3><ul>
+<li><p>是通过包管理工具<code>pip</code>完成的</p>
+<ul>
+<li>需要通过 <code>pip install 模块名</code> 安装</li>
+</ul>
+</li>
+<li><p>也通过可以Python解释器找到一些第三方库</p>
+<p>  <img src="/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304140151603.png" alt="image-20220304140151603"></p>
+</li>
+</ul>
+</li>
+<li><h3 id="自定义模块"><a href="#自定义模块" class="headerlink" title="自定义模块"></a>自定义模块</h3><ul>
+<li>自定义模块是自己写的模块，对某段逻辑或某些函数进行封装后供其他函<br>  数调用。</li>
+</ul>
+<p>  比如先定义一个模块<code>baidu.py</code>，输入代码：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">search</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;这是一个搜索方法&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>  然后在另一个模块<code>demo.py</code>导入，注意导入时的选择：</p>
+  <img src="/2022/03/04/14-10-Python-%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8C%85/image-20220304141004887.png" alt="image-20220304141004887" style="zoom:50%;">
+
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> baidu <span class="keyword">import</span> search</span><br><span class="line">search()</span><br></pre></td></tr></table></figure>
+
+<p>  或者写：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> baidu</span><br><span class="line">baidu.search()</span><br></pre></td></tr></table></figure>
+
+<p>  一个是直接导入<code>baidu</code>模块的<code>search</code>方法，另一个是只导入<code>baidu</code>模块，在模块内调用<code>search</code>方法。</p>
+<blockquote>
+<p>如果要导入一个模块的很多类或者方法，可以写 <code>from 模块名 import *</code></p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-文件引用"><a href="#3-文件引用" class="headerlink" title="3 文件引用"></a>3 文件引用</h1><h2 id="模块导入"><a href="#模块导入" class="headerlink" title="模块导入"></a>模块导入</h2><ul>
+<li><code>import 模块名</code></li>
+<li><code>from &lt;模块名&gt; import &lt;方法 | 变量 | 类&gt;</code></li>
+<li><code>from &lt; 模块名 &gt; import*</code></li>
+</ul>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>同一个模块写多次只被导入一次</li>
+<li><code>import</code>应该放在代码的顶端</li>
+</ul>
+</blockquote>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><ul>
+<li><code>dir()</code> 找出当前模块定义的对象</li>
+<li><code>dir(sys)</code>找出参数模块定义的对象</li>
+</ul>
+<h2 id="搜索路径"><a href="#搜索路径" class="headerlink" title="搜索路径"></a><strong>搜索路径</strong></h2><p><code>print(sys.path)</code> ，记得先导入<code>sys</code>模块</p>
+<ul>
+<li>Python解析器对模块位置的搜索顺序是<ul>
+<li>包含输入脚本的目录（如果未指定文件，则为当前目录）</li>
+<li>PYTHONPATH（目录名称列表，语法与shell变量相同PATH）</li>
+<li>安装的默认路径</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用模块的总结"><a href="#使用模块的总结" class="headerlink" title="使用模块的总结"></a>使用模块的总结</h2><ul>
+<li>代码的可维护性</li>
+<li>提升编码效率</li>
+<li>函数名可重复（起名避免与系统重复）</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag"># python编程语言</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/03/14-9-%E7%B1%BB%E5%9E%8B%E6%B3%A8%E8%A7%A3/" rel="prev" title="14.9 类型注解">
+      <i class="fa fa-chevron-left"></i> 14.9 类型注解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/04/15-1-%E9%94%99%E8%AF%AF%E4%B8%8E%E5%BC%82%E5%B8%B8/" rel="next" title="15.1 错误与异常">
+      15.1 错误与异常 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-text">1 项目目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#python%E7%9A%84%E7%A8%8B%E5%BA%8F%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="nav-text">python的程序结构：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E6%88%90"><span class="nav-text">组成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%A8%A1%E5%9D%97%E5%AE%9A%E4%B9%89"><span class="nav-text">2 模块定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97"><span class="nav-text">模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%88%86%E7%B1%BB"><span class="nav-text">模块分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97"><span class="nav-text">如何使用模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97"><span class="nav-text">系统内置模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BC%80%E6%BA%90%E6%A8%A1%E5%9D%97"><span class="nav-text">第三方开源模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9D%97"><span class="nav-text">自定义模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%96%87%E4%BB%B6%E5%BC%95%E7%94%A8"><span class="nav-text">3 文件引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%AF%BC%E5%85%A5"><span class="nav-text">模块导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84"><span class="nav-text">搜索路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9D%97%E7%9A%84%E6%80%BB%E7%BB%93"><span class="nav-text">使用模块的总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="杨艺琳"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">杨艺琳</p>
+  <div class="site-description" itemprop="description">我就是这条街最靓的仔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">杨艺琳</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

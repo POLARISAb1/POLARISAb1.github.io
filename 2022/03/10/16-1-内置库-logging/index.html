@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="日志logging1. 日志作用 调试 复制定位问题 数据分析  1.1 日志的级别   级别 何时使用 级别数值    DEBUG 细节信息，仅当诊断问题时适用 10   INFO 确认程序按预期运行 20   WARNING 表明有已经或即将发生的意外（例如：磁盘空间不足）程序仍按预期进行 30   ERROR 由于严重的问题，程序的某些功能已经不能正常执行 40   CRITICAL 严重的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16.1 内置库-logging">
+<meta property="og:url" content="http://example.com/2022/03/10/16-1-%E5%86%85%E7%BD%AE%E5%BA%93-logging/index.html">
+<meta property="og:site_name" content="杨艺琳的博客">
+<meta property="og:description" content="日志logging1. 日志作用 调试 复制定位问题 数据分析  1.1 日志的级别   级别 何时使用 级别数值    DEBUG 细节信息，仅当诊断问题时适用 10   INFO 确认程序按预期运行 20   WARNING 表明有已经或即将发生的意外（例如：磁盘空间不足）程序仍按预期进行 30   ERROR 由于严重的问题，程序的某些功能已经不能正常执行 40   CRITICAL 严重的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-10T08:37:25.000Z">
+<meta property="article:modified_time" content="2022-03-11T08:09:32.000Z">
+<meta property="article:author" content="杨艺琳">
+<meta property="article:tag" content="python编程语言">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/03/10/16-1-%E5%86%85%E7%BD%AE%E5%BA%93-logging/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>16.1 内置库-logging | 杨艺琳的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">杨艺琳的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">放弃不难<br>但坚持一定很酷</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/16-1-%E5%86%85%E7%BD%AE%E5%BA%93-logging/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="杨艺琳">
+      <meta itemprop="description" content="我就是这条街最靓的仔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨艺琳的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          16.1 内置库-logging
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-10 16:37:25" itemprop="dateCreated datePublished" datetime="2022-03-10T16:37:25+08:00">2022-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-11 16:09:32" itemprop="dateModified" datetime="2022-03-11T16:09:32+08:00">2022-03-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">测试学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="日志logging"><a href="#日志logging" class="headerlink" title="日志logging"></a>日志logging</h1><h2 id="1-日志作用"><a href="#1-日志作用" class="headerlink" title="1. 日志作用"></a>1. 日志作用</h2><ul>
+<li>调试</li>
+<li>复制定位问题</li>
+<li>数据分析</li>
+</ul>
+<h2 id="1-1-日志的级别"><a href="#1-1-日志的级别" class="headerlink" title="1.1 日志的级别"></a>1.1 日志的级别</h2><table>
+<thead>
+<tr>
+<th>级别</th>
+<th>何时使用</th>
+<th>级别数值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>DEBUG</code></td>
+<td>细节信息，仅当诊断问题时适用</td>
+<td>10</td>
+</tr>
+<tr>
+<td><code>INFO</code></td>
+<td>确认程序按预期运行</td>
+<td>20</td>
+</tr>
+<tr>
+<td><code>WARNING</code></td>
+<td>表明有已经或即将发生的意外（例如：磁盘空间不足）程序仍按预期进行</td>
+<td>30</td>
+</tr>
+<tr>
+<td><code>ERROR</code></td>
+<td>由于严重的问题，程序的某些功能已经不能正常执行</td>
+<td>40</td>
+</tr>
+<tr>
+<td><code>CRITICAL</code></td>
+<td>严重的错误，表明程序已不能继续执行</td>
+<td>50</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>默认的日志级别是<code>warning</code></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">logging.debug(<span class="string">&quot;debug_msg&quot;</span>)</span><br><span class="line">logging.info(<span class="string">&quot;info_msg&quot;</span>)</span><br><span class="line">logging.warning(<span class="string">&quot;warning_msg&quot;</span>)</span><br><span class="line">logging.error(<span class="string">&quot;error_msg&quot;</span>)</span><br><span class="line">logging.critical(<span class="string">&quot;critical_msg&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WARNING:root:warning_msg</span><br><span class="line">ERROR:root:error_msg</span><br><span class="line">CRITICAL:root:critical_msg</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-日志的用法"><a href="#1-2-日志的用法" class="headerlink" title="1.2 日志的用法"></a>1.2 日志的用法</h2><p><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/howto/logging.html">https://docs.python.org/zh-cn/3/howto/logging.html</a></p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>logging.debug(msg, *args, **kwargs)</code></td>
+<td>创建一条严重级别为<code>DEBUG</code>的日志记录</td>
+</tr>
+<tr>
+<td><code>logging.info(msg, *args, **kwargs)</code></td>
+<td>创建一条严重级别为<code>INFO</code>的日志记录</td>
+</tr>
+<tr>
+<td><code>logging.warning(msg, *args, **kwargs)</code></td>
+<td>创建一条严重级别为<code>WARNING</code>的日志记录</td>
+</tr>
+<tr>
+<td><code>logging.error(msg, *args, **kwargs)</code></td>
+<td>创建一条严重级别为<code>ERROR</code>的日志记录</td>
+</tr>
+<tr>
+<td><code>logging.critical(msg, *args, **kwargs)</code></td>
+<td>创建一条严重级别为<code>CRITICAL</code>的日志记录</td>
+</tr>
+<tr>
+<td><code>logging.log(level, *args, **kwargs)</code></td>
+<td>创建一条严重级别为<code>level</code>的日志记录</td>
+</tr>
+<tr>
+<td><strong><code>logging.basicConfig(**kwargs)</code></strong></td>
+<td>对**<code>root logger</code>**进行一次性配置</td>
+</tr>
+</tbody></table>
+<p>日志的输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">logging.basicConfig(level=logging.DEBUG)<span class="comment">#将日志的输出级别调节为debug</span></span><br><span class="line">logging.basicConfig(filename=<span class="string">&#x27;demo.log&#x27;</span>,level=logging.DEBUG)<span class="comment">#将日志的输出到demo.log文件中</span></span><br><span class="line">logging.basicConfig(filename=<span class="string">&#x27;demo.log&#x27;</span>,filemote=<span class="string">&#x27;w&#x27;</span>,level=logging.DEBUG)<span class="comment">#先清空再写入，也可以设置为继续写</span></span><br></pre></td></tr></table></figure>
+
+<p>常用的输出（字符串格式化输出）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">logging.debug(<span class="string">&quot;姓名 %s, 年龄%d&quot;</span>,name,age)</span><br><span class="line">logging.debug(<span class="string">&quot;姓名 %s, 年龄%d&quot;</span>,% (name,age))</span><br><span class="line">logging.debug(<span class="string">&quot;姓名 &#123;&#125;, 年龄&#123;&#125;&quot;</span>.<span class="built_in">format</span>(name,age))</span><br><span class="line">logging.debug(<span class="string">f&quot;姓名<span class="subst">&#123;name&#125;</span>, 年龄<span class="subst">&#123;age&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>直接输入上面的代码并不会打印，因为logging的默认级别是WARNING，而此处的日志级别是DEBUG，需要手动设置日志级别，用下面的方法。</p>
+<h3 id="1-2-1-logging-basicConfig-函数说明"><a href="#1-2-1-logging-basicConfig-函数说明" class="headerlink" title="1.2.1 logging.basicConfig()函数说明"></a>1.2.1 logging.basicConfig()函数说明</h3><p>该方法用于为logging日志系统做一些基本配置，方法定义如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logging.basicConfig(**kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>该函数可接收的关键字参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>filename</td>
+<td>指定日志输出目标文件的文件名，指定该设置项后日志信息就不会被输出到控制台了，日志文件会在python代码文件的相同目录下会生成</td>
+</tr>
+<tr>
+<td>filemode</td>
+<td>指定日志文件的打开模式，默认为<code>&#39;a&#39;</code>。需要注意的是，该选项要在filename指定时才有效。<strong>如果希望每次清空再写入，设置为<code>&#39;w&#39;</code></strong></td>
+</tr>
+<tr>
+<td>format</td>
+<td>指定日志格式字符串，即指定日志输出时所包含的字段信息以及它们的顺序。logging模块定义的格式字段下面会列出。</td>
+</tr>
+<tr>
+<td><strong>datefmt</strong></td>
+<td>指定日期&#x2F;时间格式。需要注意的是，该选项要在format中包含时间字段%(asctime)s时才有效</td>
+</tr>
+<tr>
+<td>level</td>
+<td>指定日志器的日志级别。设置哪个级别，就会打印<strong>哪个级别以上</strong>的日志</td>
+</tr>
+<tr>
+<td>stream</td>
+<td>指定日志输出目标stream，如<code>sys.stdout</code>、<code>sys.stderr</code>以及网络<code>stream</code>。需要说明的是，stream和filename不能同时提供，否则会引发 <code>ValueError</code>异常</td>
+</tr>
+<tr>
+<td>style</td>
+<td>Python 3.2中新添加的配置项。指定format格式字符串的风格，可取值为’%’、’{‘和’$’，默认为’%’</td>
+</tr>
+<tr>
+<td>handlers</td>
+<td>Python 3.3中新添加的配置项。该选项如果被指定，它应该是一个创建了多个Handler的可迭代对象，这些handler将会被添加到root logger。需要说明的是：filename、stream和handlers这三个配置项只能有一个存在，不能同时出现2个或3个，否则会引发ValueError异常。</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">logging.basicConfig(filename=<span class="string">&#x27;demo.log&#x27;</span>, filemode=<span class="string">&#x27;w&#x27;</span>, level=logging.DEBUG, <span class="built_in">format</span>=<span class="string">&#x27;%(asctime)s | %(levelname)-8s | **%(filename)s | %(message)s&#x27;</span>)</span><br><span class="line">logging.debug(<span class="string">&quot;debug_msg&quot;</span>)</span><br><span class="line">logging.info(<span class="string">&quot;info_msg&quot;</span>)</span><br><span class="line">logging.warning(<span class="string">&quot;warning_msg&quot;</span>)</span><br><span class="line">logging.error(<span class="string">&quot;error_msg&quot;</span>)</span><br><span class="line">logging.critical(<span class="string">&quot;critical_msg&quot;</span>)</span><br><span class="line">name = <span class="string">&#x27;张三&#x27;</span></span><br><span class="line">age = <span class="number">18</span></span><br><span class="line">logging.debug(<span class="string">f&quot;姓名<span class="subst">&#123;name&#125;</span>, 年龄<span class="subst">&#123;age&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在与该文件相同目录下，生成的<code>demo.log</code>，输出：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2022</span><span class="number">-03</span><span class="number">-11</span> <span class="number">16</span>:<span class="number">00</span>:<span class="number">23</span>,<span class="number">030</span> | DEBUG    | **logging_demo.py | debug_msg</span><br><span class="line"><span class="number">2022</span><span class="number">-03</span><span class="number">-11</span> <span class="number">16</span>:<span class="number">00</span>:<span class="number">23</span>,<span class="number">030</span> | INFO     | **logging_demo.py | info_msg</span><br><span class="line"><span class="number">2022</span><span class="number">-03</span><span class="number">-11</span> <span class="number">16</span>:<span class="number">00</span>:<span class="number">23</span>,<span class="number">030</span> | WARNING  | **logging_demo.py | warning_msg</span><br><span class="line"><span class="number">2022</span><span class="number">-03</span><span class="number">-11</span> <span class="number">16</span>:<span class="number">00</span>:<span class="number">23</span>,<span class="number">030</span> | ERROR    | **logging_demo.py | error_msg</span><br><span class="line"><span class="number">2022</span><span class="number">-03</span><span class="number">-11</span> <span class="number">16</span>:<span class="number">00</span>:<span class="number">23</span>,<span class="number">030</span> | CRITICAL | **logging_demo.py | critical_msg</span><br><span class="line"><span class="number">2022</span><span class="number">-03</span><span class="number">-11</span> <span class="number">16</span>:<span class="number">00</span>:<span class="number">23</span>,<span class="number">030</span> | DEBUG    | **logging_demo.py | 姓名张三, 年龄<span class="number">18</span></span><br></pre></td></tr></table></figure>
+
+<p><code>datefmt</code> 参数的格式：</p>
+<table>
+<thead>
+<tr>
+<th align="left">指令</th>
+<th align="left">含意</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>%a</code></td>
+<td align="left">本地化的缩写星期中每日的名称。</td>
+</tr>
+<tr>
+<td align="left"><code>%A</code></td>
+<td align="left">本地化的星期中每日的完整名称。</td>
+</tr>
+<tr>
+<td align="left"><code>%b</code></td>
+<td align="left">本地化的月缩写名称。</td>
+</tr>
+<tr>
+<td align="left"><code>%B</code></td>
+<td align="left">本地化的月完整名称。</td>
+</tr>
+<tr>
+<td align="left"><code>%c</code></td>
+<td align="left">本地化的适当日期和时间表示。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>%d</code></strong></td>
+<td align="left">十进制数 [01,31] 表示的月中日。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>%H</code></strong></td>
+<td align="left">十进制数 [00,23] 表示的小时（24小时制）。</td>
+</tr>
+<tr>
+<td align="left"><code>%I</code></td>
+<td align="left">十进制数 [01,12] 表示的小时（12小时制）。</td>
+</tr>
+<tr>
+<td align="left"><code>%j</code></td>
+<td align="left">十进制数 [001,366] 表示的年中日。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>%m</code></strong></td>
+<td align="left">十进制数 [01,12] 表示的月。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>%M</code></strong></td>
+<td align="left">十进制数 [00,59] 表示的分钟。</td>
+</tr>
+<tr>
+<td align="left"><code>%p</code></td>
+<td align="left">本地化的 AM 或 PM 。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>%S</code></strong></td>
+<td align="left">十进制数 [00,61] 表示的秒。</td>
+</tr>
+<tr>
+<td align="left"><code>%U</code></td>
+<td align="left">十进制数 [00,53] 表示的一年中的周数（星期日作为一周的第一天）。 在第一个星期日之前的新年中的所有日子都被认为是在第 0 周。</td>
+</tr>
+<tr>
+<td align="left"><code>%w</code></td>
+<td align="left">十进制数 [0(星期日),6] 表示的周中日。</td>
+</tr>
+<tr>
+<td align="left"><code>%W</code></td>
+<td align="left">十进制数 [00,53] 表示的一年中的周数（星期一作为一周的第一天）。 在第一个星期一之前的新年中的所有日子被认为是在第 0 周。</td>
+</tr>
+<tr>
+<td align="left"><code>%x</code></td>
+<td align="left">本地化的适当日期表示。</td>
+</tr>
+<tr>
+<td align="left"><code>%X</code></td>
+<td align="left">本地化的适当时间表示。</td>
+</tr>
+<tr>
+<td align="left"><code>%y</code></td>
+<td align="left">十进制数 [00,99] 表示的没有世纪的年份。</td>
+</tr>
+<tr>
+<td align="left"><strong><code>%Y</code></strong></td>
+<td align="left">十进制数表示的带世纪的年份。</td>
+</tr>
+<tr>
+<td align="left"><code>%z</code></td>
+<td align="left">Time zone offset indicating a positive or negative time difference from UTC&#x2F;GMT of the form +HHMM or -HHMM, where H represents decimal hour digits and M represents decimal minute digits [-23:59, +23:59]. <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/time.html#id4">1</a></td>
+</tr>
+<tr>
+<td align="left"><code>%Z</code></td>
+<td align="left">Time zone name (no characters if no time zone exists). Deprecated. <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/time.html#id4">1</a></td>
+</tr>
+<tr>
+<td align="left"><code>%%</code></td>
+<td align="left">字面的 <code>&#39;%&#39;</code> 字符。</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-2-logging模块定义的格式字符串字段"><a href="#1-2-2-logging模块定义的格式字符串字段" class="headerlink" title="1.2.2 logging模块定义的格式字符串字段"></a>1.2.2 logging模块定义的格式字符串字段</h3><p>logging模块中定义好的可以用于format格式字符串中的字段：</p>
+<table>
+<thead>
+<tr>
+<th>字段&#x2F;属性名称</th>
+<th>使用格式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>asctime</strong></td>
+<td>%(asctime)s</td>
+<td>日志事件发生的时间–人类可读时间，如：2003-07-08 16:49:45,896</td>
+</tr>
+<tr>
+<td>created</td>
+<td>%(created)f</td>
+<td>日志事件发生的时间–时间戳，就是当时调用time.time()函数返回的值</td>
+</tr>
+<tr>
+<td>relativeCreated</td>
+<td>%(relativeCreated)d</td>
+<td>日志事件发生的时间相对于logging模块加载时间的相对毫秒数（目前还不知道干嘛用的）</td>
+</tr>
+<tr>
+<td>msecs</td>
+<td>%(msecs)d</td>
+<td>日志事件发生事件的毫秒部分</td>
+</tr>
+<tr>
+<td><strong>levelname</strong></td>
+<td>%(levelname)s</td>
+<td>该日志记录的文字形式的日志级别（’DEBUG’, ‘INFO’, ‘WARNING’, ‘ERROR’, ‘CRITICAL’）</td>
+</tr>
+<tr>
+<td>levelno</td>
+<td>%(levelno)s</td>
+<td>该日志记录的数字形式的日志级别（10, 20, 30, 40, 50）</td>
+</tr>
+<tr>
+<td>name</td>
+<td>%(name)s</td>
+<td>所使用的日志器名称，默认是’root’，因为默认使用的是 rootLogger</td>
+</tr>
+<tr>
+<td><strong>message</strong></td>
+<td>%(message)s</td>
+<td>日志记录的文本内容，通过 <code>msg % args</code>计算得到的</td>
+</tr>
+<tr>
+<td>pathname</td>
+<td>%(pathname)s</td>
+<td>调用日志记录函数的源码文件的全路径</td>
+</tr>
+<tr>
+<td><strong>filename</strong></td>
+<td>%(filename)s</td>
+<td>pathname的文件名部分，包含文件后缀</td>
+</tr>
+<tr>
+<td>module</td>
+<td>%(module)s</td>
+<td>filename的名称部分，不包含后缀</td>
+</tr>
+<tr>
+<td>lineno</td>
+<td>%(lineno)d</td>
+<td>调用日志记录函数的源代码所在的行号</td>
+</tr>
+<tr>
+<td>funcName</td>
+<td>%(funcName)s</td>
+<td>调用日志记录函数的函数名</td>
+</tr>
+<tr>
+<td>process</td>
+<td>%(process)d</td>
+<td>进程ID</td>
+</tr>
+<tr>
+<td>processName</td>
+<td>%(processName)s</td>
+<td>进程名称，Python 3.1新增</td>
+</tr>
+<tr>
+<td>thread</td>
+<td>%(thread)d</td>
+<td>线程ID</td>
+</tr>
+<tr>
+<td>threadName</td>
+<td>%(thread)s</td>
+<td>线程名称</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag"># python编程语言</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/10/15-10-%E5%86%85%E7%BD%AE%E5%BA%93-%E5%A4%9A%E7%BA%BF%E7%A8%8Bthreding/" rel="prev" title="15.10 内置库-多线程threding">
+      <i class="fa fa-chevron-left"></i> 15.10 内置库-多线程threding
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/10/16-2-%E5%86%85%E7%BD%AE%E5%BA%93-logging%E9%AB%98%E7%BA%A7%E4%BD%BF%E7%94%A8/" rel="next" title="16.2 内置库-logging高级使用">
+      16.2 内置库-logging高级使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A5%E5%BF%97logging"><span class="nav-text">日志logging</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%97%A5%E5%BF%97%E4%BD%9C%E7%94%A8"><span class="nav-text">1. 日志作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%97%A5%E5%BF%97%E7%9A%84%E7%BA%A7%E5%88%AB"><span class="nav-text">1.1 日志的级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%97%A5%E5%BF%97%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-text">1.2 日志的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-logging-basicConfig-%E5%87%BD%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="nav-text">1.2.1 logging.basicConfig()函数说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-logging%E6%A8%A1%E5%9D%97%E5%AE%9A%E4%B9%89%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E6%AE%B5"><span class="nav-text">1.2.2 logging模块定义的格式字符串字段</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="杨艺琳"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">杨艺琳</p>
+  <div class="site-description" itemprop="description">我就是这条街最靓的仔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">杨艺琳</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

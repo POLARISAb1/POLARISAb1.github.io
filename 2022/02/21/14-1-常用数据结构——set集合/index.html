@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="集合定义与使用集合定义 无序的唯一对象集合 用大括号&amp;#123;&amp;#125;包围，对象相互之间使用逗号分隔 集合是动态的，可以随时添加或删除元素 集合是异构的，可以包含不同类型的数据  集合使用创建 创建  通过使用&amp;#123;&amp;#125;填充元素   123st4 &#x3D; &amp;#123;1, 2, 3&amp;#125;st5 &#x3D; &amp;#123;&amp;#x27;a&amp;#x27;, &amp;#x27;b&amp;#x27;, &amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="14.1 常用数据结构——set集合">
+<meta property="og:url" content="http://example.com/2022/02/21/14-1-%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94set%E9%9B%86%E5%90%88/index.html">
+<meta property="og:site_name" content="杨艺琳的博客">
+<meta property="og:description" content="集合定义与使用集合定义 无序的唯一对象集合 用大括号&amp;#123;&amp;#125;包围，对象相互之间使用逗号分隔 集合是动态的，可以随时添加或删除元素 集合是异构的，可以包含不同类型的数据  集合使用创建 创建  通过使用&amp;#123;&amp;#125;填充元素   123st4 &#x3D; &amp;#123;1, 2, 3&amp;#125;st5 &#x3D; &amp;#123;&amp;#x27;a&amp;#x27;, &amp;#x27;b&amp;#x27;, &amp;#x">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/02/Markdown文档/测试/3%20Python编程语言/14.1%20Python常用数据结构——Set集合/image-20210614214617665.png">
+<meta property="og:image" content="http://example.com/2022/02/Markdown文档/测试/3%20Python编程语言/14.1%20Python常用数据结构——Set集合/image-20210614214440627.png">
+<meta property="og:image" content="http://example.com/2022/02/Markdown文档/测试/3%20Python编程语言/14.1%20Python常用数据结构——Set集合/image-20210614214644314.png">
+<meta property="article:published_time" content="2022-02-21T06:09:33.000Z">
+<meta property="article:modified_time" content="2022-02-21T06:15:36.000Z">
+<meta property="article:author" content="杨艺琳">
+<meta property="article:tag" content="python编程语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/Markdown文档/测试/3%20Python编程语言/14.1%20Python常用数据结构——Set集合/image-20210614214617665.png">
+
+<link rel="canonical" href="http://example.com/2022/02/21/14-1-%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94set%E9%9B%86%E5%90%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>14.1 常用数据结构——set集合 | 杨艺琳的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">杨艺琳的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">放弃不难<br>但坚持一定很酷</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/14-1-%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94set%E9%9B%86%E5%90%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="杨艺琳">
+      <meta itemprop="description" content="我就是这条街最靓的仔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨艺琳的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          14.1 常用数据结构——set集合
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-02-21 14:09:33 / 修改时间：14:15:36" itemprop="dateCreated datePublished" datetime="2022-02-21T14:09:33+08:00">2022-02-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">测试学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="集合定义与使用"><a href="#集合定义与使用" class="headerlink" title="集合定义与使用"></a>集合定义与使用</h1><h2 id="集合定义"><a href="#集合定义" class="headerlink" title="集合定义"></a>集合定义</h2><ul>
+<li>无序的唯一对象集合</li>
+<li>用大括号<code>&#123;&#125;</code>包围，对象相互之间使用逗号分隔</li>
+<li>集合是动态的，可以随时添加或删除元素</li>
+<li>集合是异构的，可以包含不同类型的数据</li>
+</ul>
+<h2 id="集合使用"><a href="#集合使用" class="headerlink" title="集合使用"></a>集合使用</h2><h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><ul>
+<li><p>创建</p>
+<ul>
+<li><p>通过使用<code>&#123;&#125;</code>填充元素</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">st4 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">st5 = &#123;<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(st4, st5)  <span class="comment"># 打印&#123;1, 2, 3&#125; &#123;&#x27;c&#x27;, &#x27;b&#x27;, &#x27;a&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过构造方法 set()</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">st1 = <span class="built_in">set</span>()  <span class="comment"># 空集合</span></span><br><span class="line">st2 = <span class="built_in">set</span>(<span class="string">&#x27;hogwarts&#x27;</span>)</span><br><span class="line">li = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>]</span><br><span class="line">st3 = <span class="built_in">set</span>(li)</span><br><span class="line"><span class="built_in">print</span>(st1)</span><br><span class="line"><span class="built_in">print</span>(st2)</span><br><span class="line"><span class="built_in">print</span>(st3)</span><br></pre></td></tr></table></figure>
+
+<p>  结果：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>()</span><br><span class="line">&#123;<span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>&#125;</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过集合推导式</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">st6 = &#123;x <span class="keyword">for</span> x <span class="keyword">in</span> li&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>​    <strong>注意：不要单独使用{ }来创建空集合</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">st7 = &#123;&#125;  <span class="comment"># 这是字典类型</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(st7))	<span class="comment"># 打印 &lt;class &#x27;dict&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="成员检测"><a href="#成员检测" class="headerlink" title="成员检测"></a>成员检测</h3><ul>
+<li><p>n</p>
+<ul>
+<li><p>判断元素是否在集合中存在</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">st = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="number">2</span> <span class="keyword">in</span> st)  <span class="comment"># 打印 True</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>not in</p>
+<ul>
+<li><p>判断元素是否在集合中不存在</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">99</span> <span class="keyword">not</span> <span class="keyword">in</span> st)  <span class="comment"># 打印 True</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h1 id="集合常用方法"><a href="#集合常用方法" class="headerlink" title="集合常用方法"></a>集合常用方法</h1><h2 id="add"><a href="#add" class="headerlink" title="add()"></a>add()</h2><ul>
+<li><p><code>add(item)</code>：将单个对象添加到集合中</p>
+</li>
+<li><p>入参：对象 item</p>
+</li>
+<li><p>返回：None</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加元素</span></span><br><span class="line">st = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">st.add(<span class="number">99</span>)</span><br><span class="line">st.add(<span class="string">&#x27;hogwarts&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(st)   <span class="comment"># 打印 &#123;1, 2, 99, 3, &#x27;hogwarts&#x27;&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="update"><a href="#update" class="headerlink" title="update()"></a>update()</h2><ul>
+<li><p><code>update(iterable)</code></p>
+</li>
+<li><p>批量添加来自可迭代对象中的所有元素</p>
+</li>
+<li><p>入参：可迭代对象 iterable</p>
+</li>
+<li><p>返回：None</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">li = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">tup = (<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">st = &#123;<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1、批量添加列表中的元素</span></span><br><span class="line">st1 = <span class="built_in">set</span>()</span><br><span class="line">st1.update(li)</span><br><span class="line"><span class="comment"># 2、批量添加元组中的元素</span></span><br><span class="line">st1.update(tup)</span><br><span class="line"><span class="comment"># 3、批量添加集合中的元素</span></span><br><span class="line">st1.update(st)</span><br><span class="line"><span class="built_in">print</span>(st1)</span><br></pre></td></tr></table></figure>
+
+<p>  结果：</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;b&#x27;</span>&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="remove"><a href="#remove" class="headerlink" title="remove()"></a>remove()</h2><ul>
+<li><p><code>remove(item)</code>：从集合中移除指定元素 item。</p>
+</li>
+<li><p>入参：指定元素值</p>
+</li>
+<li><p>返回：None</p>
+</li>
+<li><p>如果 item 不存在于集合中则会引发 KeyError</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、删除已存在的元素</span></span><br><span class="line">st = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">st.remove(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(st)  <span class="comment"># 打印 &#123;1, 3, 4, 5&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、删除不存在的元素</span></span><br><span class="line">st.remove(<span class="number">1024</span>)  <span class="comment"># KeyError</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="discard"><a href="#discard" class="headerlink" title="discard()"></a>discard()</h2><ul>
+<li><p><code>discard(item)</code>：从集合中移除指定对象 item。</p>
+</li>
+<li><p>入参：指定对象值</p>
+</li>
+<li><p>返回：None</p>
+</li>
+<li><p>元素 item 不存在没影响，不会抛出 KeyError 错误。</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、删除已存在的元素</span></span><br><span class="line">st = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">st.remove(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(st)  <span class="comment"># 打印 &#123;1, 3, 4, 5&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、删除不存在的元素</span></span><br><span class="line">st.discard(<span class="number">1024</span>)</span><br><span class="line"><span class="built_in">print</span>(st)  <span class="comment"># 打印 &#123;1, 3, 4, 5&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="pop"><a href="#pop" class="headerlink" title="pop()"></a>pop()</h2><ul>
+<li><p><code>pop()</code>：随机从集合中移除并返回一个元素。</p>
+</li>
+<li><p>入参：无。</p>
+</li>
+<li><p>返回：被移除的元组。</p>
+</li>
+<li><p>如果集合为空则会引发 KeyError。</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、随机删除某个对象</span></span><br><span class="line">st = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">item = st.pop()</span><br><span class="line"><span class="built_in">print</span>(item, st)  <span class="comment"># 打印 1 &#123;2, 3, 4, 5&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、集合本身为空会报错</span></span><br><span class="line">st = <span class="built_in">set</span>()</span><br><span class="line">st.pop()  <span class="comment"># KeyError</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="clear"><a href="#clear" class="headerlink" title="clear()"></a>clear()</h2><ul>
+<li><p><code>clear()</code>：清空集合，移除所有元素</p>
+</li>
+<li><p>入参：无</p>
+</li>
+<li><p>返回：None</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">st = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">st.clear()</span><br><span class="line"><span class="built_in">print</span>(st)  <span class="comment"># 打印 set()</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h1><h2 id="交集运算"><a href="#交集运算" class="headerlink" title="交集运算"></a>交集运算</h2><img src="/2022/02/21/14-1-%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94set%E9%9B%86%E5%90%88/../../Markdown文档/测试/3 Python编程语言/14.1 Python常用数据结构——Set集合/image-20210614214617665.png" alt="img" style="zoom:20%;">
+
+<ul>
+<li><p>交集运算</p>
+</li>
+<li><p>intersection()</p>
+</li>
+<li><p>操作符：&amp;</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set1 = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>&#125;</span><br><span class="line">set2 = &#123;<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(set1.intersection(set2))  <span class="comment"># 打印 &#123;2, 3&#125;</span></span><br><span class="line"><span class="built_in">print</span>(set1 &amp; set2)  <span class="comment"># 打印 &#123;2, 3&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="并集运算"><a href="#并集运算" class="headerlink" title="并集运算"></a>并集运算</h2><img src="/2022/02/21/14-1-%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94set%E9%9B%86%E5%90%88/../../Markdown文档/测试/3 Python编程语言/14.1 Python常用数据结构——Set集合/image-20210614214440627.png" alt="img" style="zoom: 20%;">
+
+<ul>
+<li><p>并集运算</p>
+</li>
+<li><p>union()</p>
+</li>
+<li><p>操作符：｜</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 求两个集合的并集</span></span><br><span class="line">set1 = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>&#125;</span><br><span class="line">set2 = &#123;<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(set1.union(set2))  <span class="comment"># 打印 &#123;1, 2, 3, 4&#125;</span></span><br><span class="line"><span class="built_in">print</span>(set1 | set2)  <span class="comment"># 打印 &#123;1, 2, 3, 4&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="差集运算"><a href="#差集运算" class="headerlink" title="差集运算"></a>差集运算</h2><img src="/2022/02/21/14-1-%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94set%E9%9B%86%E5%90%88/../../Markdown文档/测试/3 Python编程语言/14.1 Python常用数据结构——Set集合/image-20210614214644314.png" alt="img" style="zoom:20%;">
+
+<ul>
+<li><p>差集运算</p>
+</li>
+<li><p>difference()</p>
+</li>
+<li><p>操作符： -</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">set1 = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>&#125;</span><br><span class="line">set2 = &#123;<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(set1.difference(set2))  <span class="comment"># 打印 &#123;1&#125;</span></span><br><span class="line"><span class="built_in">print</span>(set1 - set2)  <span class="comment"># 打印 &#123;1&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="集合推导式"><a href="#集合推导式" class="headerlink" title="集合推导式"></a>集合推导式</h1><ul>
+<li><p>类似列表推导式，同样集合支持集合推导式</p>
+</li>
+<li><p>语法：<code>&#123;x for x in ... if ...&#125;</code></p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">st = &#123;x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="string">&#x27;hogwarts&#x27;</span> <span class="keyword">if</span> x <span class="keyword">in</span> <span class="string">&#x27;hello world&#x27;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(st)   <span class="comment"># 打印 &#123;&#x27;r&#x27;, &#x27;w&#x27;, &#x27;o&#x27;, &#x27;h&#x27;&#125;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag"># python编程语言</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/21/13-10-%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94tuple%E5%85%83%E7%BB%84/" rel="prev" title="13.10 常用数据结构——tuple元组">
+      <i class="fa fa-chevron-left"></i> 13.10 常用数据结构——tuple元组
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/21/14-2-%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94dict%E5%AD%97%E5%85%B8/" rel="next" title="14.2 常用数据结构——dict字典">
+      14.2 常用数据结构——dict字典 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="nav-text">集合定义与使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%AE%9A%E4%B9%89"><span class="nav-text">集合定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E4%BD%BF%E7%94%A8"><span class="nav-text">集合使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E6%A3%80%E6%B5%8B"><span class="nav-text">成员检测</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">集合常用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#add"><span class="nav-text">add()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#update"><span class="nav-text">update()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#remove"><span class="nav-text">remove()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#discard"><span class="nav-text">discard()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pop"><span class="nav-text">pop()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clear"><span class="nav-text">clear()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97"><span class="nav-text">集合运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E9%9B%86%E8%BF%90%E7%AE%97"><span class="nav-text">交集运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E9%9B%86%E8%BF%90%E7%AE%97"><span class="nav-text">并集运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%AE%E9%9B%86%E8%BF%90%E7%AE%97"><span class="nav-text">差集运算</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E6%8E%A8%E5%AF%BC%E5%BC%8F"><span class="nav-text">集合推导式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="杨艺琳"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">杨艺琳</p>
+  <div class="site-description" itemprop="description">我就是这条街最靓的仔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">杨艺琳</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

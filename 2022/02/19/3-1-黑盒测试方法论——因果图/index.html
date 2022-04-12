@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="因果图定义因果图法是一种利用图解法分析输入的各种组合情况，从而设计测试用例的方法它适合于检查程序输入条件的各种组合情况  “因”一一输入条件  “果”一一输出结果   因果图使用场景 描述多种条件的组合  产生多个动作   因果图中的基本符号     恒等：若原因出现，则结果出现；若原因不出现，则结果也不出现  非：若原因出现，则结果不出现；若原因不出现，则结果出现  或：有多个原因。若几个原因中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.1 黑盒测试方法论——因果图">
+<meta property="og:url" content="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/index.html">
+<meta property="og:site_name" content="杨艺琳的博客">
+<meta property="og:description" content="因果图定义因果图法是一种利用图解法分析输入的各种组合情况，从而设计测试用例的方法它适合于检查程序输入条件的各种组合情况  “因”一一输入条件  “果”一一输出结果   因果图使用场景 描述多种条件的组合  产生多个动作   因果图中的基本符号     恒等：若原因出现，则结果出现；若原因不出现，则结果也不出现  非：若原因出现，则结果不出现；若原因不出现，则结果出现  或：有多个原因。若几个原因中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231559425-16448045494661.png">
+<meta property="og:image" content="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231621559-16448045521032.png">
+<meta property="og:image" content="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231818633-16448045554963.png">
+<meta property="og:image" content="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213232015142-16448045587564.png">
+<meta property="og:image" content="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231942442-16448045650375.png">
+<meta property="article:published_time" content="2022-02-19T04:51:30.000Z">
+<meta property="article:modified_time" content="2022-03-23T07:19:42.000Z">
+<meta property="article:author" content="杨艺琳">
+<meta property="article:tag" content="测试方法与理论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231559425-16448045494661.png">
+
+<link rel="canonical" href="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>3.1 黑盒测试方法论——因果图 | 杨艺琳的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">杨艺琳的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">放弃不难<br>但坚持一定很酷</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="杨艺琳">
+      <meta itemprop="description" content="我就是这条街最靓的仔">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨艺琳的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3.1 黑盒测试方法论——因果图
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-19 12:51:30" itemprop="dateCreated datePublished" datetime="2022-02-19T12:51:30+08:00">2022-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-23 15:19:42" itemprop="dateModified" datetime="2022-03-23T15:19:42+08:00">2022-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">测试学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="因果图定义"><a href="#因果图定义" class="headerlink" title="因果图定义"></a>因果图定义</h1><p>因果图法是一种利用图解法分析输入的各种组合情况，从而设计测试用例的方法它适合于检查程序输入条件的各种组合情况</p>
+<ul>
+<li><p>“因”一一输入条件</p>
+</li>
+<li><p>“果”一一输出结果</p>
+</li>
+</ul>
+<h1 id="因果图使用场景"><a href="#因果图使用场景" class="headerlink" title="因果图使用场景"></a>因果图使用场景</h1><ul>
+<li><p>描述多种条件的组合</p>
+</li>
+<li><p>产生多个动作</p>
+</li>
+</ul>
+<h1 id="因果图中的基本符号"><a href="#因果图中的基本符号" class="headerlink" title="因果图中的基本符号"></a>因果图中的基本符号</h1><img src="/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231559425-16448045494661.png" alt="image-20220213231559425" style="zoom:50%;">
+
+
+
+<ul>
+<li><p>恒等：若原因出现，则结果出现；若原因不出现，则结果也不出现</p>
+</li>
+<li><p>非：若原因出现，则结果不出现；若原因不出现，则结果出现</p>
+</li>
+<li><p>或：有多个原因。若几个原因中有一个出现，则结果出现；若几个原因都不出现，则结果不出现</p>
+</li>
+<li><p>与：有多个原因。若几个原因都出现，则结果才出现；若其中一个原因不出现，则结果不出现</p>
+</li>
+</ul>
+<h1 id="因果图中的约束条件"><a href="#因果图中的约束条件" class="headerlink" title="因果图中的约束条件"></a>因果图中的约束条件</h1><img src="/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231621559-16448045521032.png" alt="image-20220213231621559" style="zoom:50%;">
+
+<ul>
+<li><p>互斥E：a、b、c只能有一个成立，但是可以都不成立</p>
+</li>
+<li><p>包含I：a、b、c中至少有一个成立</p>
+</li>
+<li><p>唯一O：a、b、c有且仅有一个成立</p>
+</li>
+<li><p>要求R：如果a成立，则要求b必须也成立，其他的不约束</p>
+</li>
+<li><p>屏蔽M：如果a成立的时候，强制b不成立，其他的不约束</p>
+</li>
+</ul>
+<h1 id="因果图法基本步骤"><a href="#因果图法基本步骤" class="headerlink" title="因果图法基本步骤"></a>因果图法基本步骤</h1><ol>
+<li><p>找出所有的输入条件（因）</p>
+</li>
+<li><p>找出所有的输出条件（果）</p>
+</li>
+<li><p>明确所有输入条件之间的制约关系以及组合关系</p>
+</li>
+<li><p>明确所有输出条件之间的制约关系以及组合关系</p>
+</li>
+<li><p>找出什么样的输入条件组合会产生哪种输出结果</p>
+</li>
+<li><p>把因果图转换成判定表</p>
+</li>
+<li><p>为判定表中的每一列表示的情况设计测试用例</p>
+</li>
+</ol>
+<p><strong>例子：交通一卡通自动充值软件系统</strong></p>
+<img src="/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231818633-16448045554963.png" alt="image-20220213231818633" style="zoom: 80%;">
+
+<p>需求解释：</p>
+<ul>
+<li><p>系统只接收50或100元纸币，一次只能使用一张纸币，一次充值金额只能为50元或100元</p>
+</li>
+<li><p>在请投币的后面按50元按钮，代表投入50元纸币；按100元按钮，代表投入100元纸币</p>
+</li>
+<li><p>若按50元按钮，并选择充值50元，完成充值，提示充值成功</p>
+</li>
+<li><p>若按50元按钮，并选择充值100元，提示输入金额不足，退回50元</p>
+</li>
+<li><p>若按100元按钮，并选择充值50元，完成充值，提示充值成功，退回50元</p>
+</li>
+<li><p>若按100元按钮，并选择充值100元，完成充值，提示充值成功</p>
+</li>
+<li><p>若按投币按钮后在规定时间内不选择充值按钮，提示错误，退回投入纸币</p>
+</li>
+<li><p>若选择充值按钮后不按投币按钮，提示错误</p>
+</li>
+</ul>
+<p>找到所有输入条件编号：</p>
+<ul>
+<li>1.选择投币50元</li>
+<li>2.选择投币100元</li>
+<li>3.选择充值50元</li>
+<li>4.选择充值100元</li>
+</ul>
+<p>找到所有输出条件编号</p>
+<ul>
+<li><p>a.完成充值</p>
+</li>
+<li><p>b.提示充值成功</p>
+</li>
+<li><p>c.退回纸币</p>
+</li>
+<li><p>d.提示错误</p>
+</li>
+</ul>
+<p>步骤：</p>
+<ol>
+<li><p>画图分析输入和输出的关系，此处转化为表格形式</p>
+ <img src="/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213232015142-16448045587564.png" alt="image-20220213232015142" style="zoom:50%;">
+</li>
+<li><p>转化为测试用例</p>
+</li>
+</ol>
+<img src="/2022/02/19/3-1-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9B%A0%E6%9E%9C%E5%9B%BE/image-20220213231942442-16448045650375.png" alt="image-20220213231942442" style="zoom: 43%;">
+
+<h1 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h1><p>寻找因果图中的约束关系</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E4%B8%8E%E7%90%86%E8%AE%BA/" rel="tag"># 测试方法与理论</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/19/2-10-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E8%BE%B9%E7%95%8C%E5%80%BC/" rel="prev" title="2.10 黑盒测试方法论——边界值">
+      <i class="fa fa-chevron-left"></i> 2.10 黑盒测试方法论——边界值
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/19/3-2-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%E8%AE%BA%E2%80%94%E2%80%94%E5%9C%BA%E6%99%AF%E6%B3%95/" rel="next" title="3.2 黑盒测试方法论——场景法">
+      3.2 黑盒测试方法论——场景法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%A0%E6%9E%9C%E5%9B%BE%E5%AE%9A%E4%B9%89"><span class="nav-text">因果图定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%A0%E6%9E%9C%E5%9B%BE%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">因果图使用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%A0%E6%9E%9C%E5%9B%BE%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%AC%A6%E5%8F%B7"><span class="nav-text">因果图中的基本符号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%A0%E6%9E%9C%E5%9B%BE%E4%B8%AD%E7%9A%84%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6"><span class="nav-text">因果图中的约束条件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%A0%E6%9E%9C%E5%9B%BE%E6%B3%95%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4"><span class="nav-text">因果图法基本步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9A%BE%E7%82%B9"><span class="nav-text">难点</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="杨艺琳"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">杨艺琳</p>
+  <div class="site-description" itemprop="description">我就是这条街最靓的仔</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">杨艺琳</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
