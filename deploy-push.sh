@@ -1,4 +1,4 @@
-echo "开始执行清楚和编译。。。"
+echo "开始执行清除和编译。。。"
 hexo clean && hexo g
 echo "开始推送博客。。。"
 hexo d
