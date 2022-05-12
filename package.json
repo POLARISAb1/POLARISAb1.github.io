@@ -26,6 +26,6 @@
     "hexo-server": "^3.0.0",
     "hexo-theme-landscape": "^0.0.3",
     "install": "^0.13.0",
-    "npm": "^8.5.1"
+    "npm": "^8.10.0"
   }
 }
